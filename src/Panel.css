@@ -1,0 +1,7 @@
+#PanelContainer {
+    width: 30%;
+    height: 100%;
+    text-align: center;
+    border: 3px solid black;
+    border-radius: 10px;
+}
