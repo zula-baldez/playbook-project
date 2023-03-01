@@ -1,0 +1,37 @@
+<svg width="3200" height="1900" viewBox="0 0 3200 1900" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_2)">
+<rect width="3200" height="1900" fill="#314753"/>
+<circle cx="2840" cy="943" r="662.5" stroke="#F5F5F5" stroke-width="5"/>
+<circle cx="365" cy="950" r="662.5" stroke="#F5F5F5" stroke-width="5"/>
+<rect x="204" y="222" width="317" height="1469" fill="#314753"/>
+<circle cx="2426" cy="951" r="177.5" transform="rotate(180 2426 951)" stroke="#F5F5F5" stroke-width="5"/>
+<path d="M956.5 953.5C956.5 1052.94 876.998 1133.5 779 1133.5C681.002 1133.5 601.5 1052.94 601.5 953.5C601.5 854.056 681.002 773.5 779 773.5C876.998 773.5 956.5 854.056 956.5 953.5Z" stroke="#F5F5F5" stroke-width="5"/>
+<circle cx="1600" cy="950" r="177.5" stroke="#F5F5F5" stroke-width="5"/>
+<rect x="100" y="100" width="3000" height="1700" stroke="#6D8694" stroke-width="200"/>
+<rect x="2679" y="215" width="317" height="1469" fill="#314753"/>
+<line x1="1602.5" y1="199" x2="1602.5" y2="1700" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="3002.5" y1="199" x2="3002.5" y2="1700" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="202.5" y1="200" x2="202.5" y2="1701" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="200" y1="197.5" x2="3000" y2="197.5" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="200" y1="1697.5" x2="3000" y2="1697.5" stroke="#F5F5F5" stroke-width="5"/>
+<rect x="202.5" y="712.5" width="574" height="475" fill="#0D2B3C" stroke="#F5F5F5" stroke-width="5"/>
+<rect x="2428.5" y="712.5" width="574" height="475" fill="#0D2B3C" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="779" y1="773.5" x2="200" y2="773.5" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="779" y1="1133.5" x2="200" y2="1133.5" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="2426" y1="1128.5" x2="3005" y2="1128.5" stroke="#F5F5F5" stroke-width="5"/>
+<path d="M2426 773.5L3005 773.5" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="201" y1="305.5" x2="521.002" y2="305.5" stroke="#F5F5F5" stroke-width="5"/>
+<line x1="201" y1="1593.5" x2="521.002" y2="1593.5" stroke="#F5F5F5" stroke-width="5"/>
+<rect x="265" y="870" width="21" height="161" fill="#6D8694"/>
+<rect x="2919" y="1031.08" width="21" height="161" transform="rotate(180 2919 1031.08)" fill="#6D8694"/>
+<line x1="286" y1="947.5" x2="296" y2="947.5" stroke="#F5F5F5" stroke-width="5"/>
+<path d="M2898 950.5H2888" stroke="#F5F5F5" stroke-width="5"/>
+<circle cx="319.5" cy="950.5" r="22" stroke="#F5F5F5" stroke-width="5"/>
+<circle cx="2864.5" cy="950.459" r="22" transform="rotate(180 2864.5 950.459)" stroke="#F5F5F5" stroke-width="5"/>
+</g>
+<defs>
+<clipPath id="clip0_1_2">
+<rect width="3200" height="1900" fill="white"/>
+</clipPath>
+</defs>
+</svg>
