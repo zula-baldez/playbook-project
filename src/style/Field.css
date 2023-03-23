@@ -1,0 +1,43 @@
+#field-container {
+    padding: 0;
+    margin: 0;
+    width: 70%;
+    height: auto;
+    align-items: center;
+    overflow: hidden;
+    background-image: url(../aboba.svg);
+    background-size: 100% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+}
+#field-canvas {
+    width: 100%;
+    height: 100%;
+    border: 3px solid black;
+    border-radius: 10px;
+
+}
+#field-container > svg {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.player-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+}
+.star-wrapper {
+    width: 80px;
+    height: 80px;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    horiz-align: center;
+    justify-items: center;
+}
+
+

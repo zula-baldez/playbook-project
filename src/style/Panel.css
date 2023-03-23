@@ -1,4 +1,4 @@
-#PanelContainer {
+#panel-container {
     width: 25%;
     height: 100%;
     text-align: center;
@@ -12,19 +12,19 @@
 
 
 }
-.StarWrapper {
-    height: 100%;
-    width: 100%;
+#panel-container > .star-wrapper {
+    width: 80px;
+    height: 80px;
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
     horiz-align: center;
     justify-items: center;
 }
-#PanelContainer > .StarWrapper > svg {
+ .star-wrapper > svg {
 
-    width: 50%;
-    height: 50%;
+    width: 80px;
+    height: 80px;
 
 
 }
