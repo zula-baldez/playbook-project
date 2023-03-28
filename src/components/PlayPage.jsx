@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import '../style/playPage.css';
-import ReactDOM from 'react-dom/client';
 import {BasketballField} from "./BasketballField";
 import {ElementPanel} from "./ElementPanel";
 import {AccountComp} from "./AccountComp";
 import {DndProvider} from 'react-dnd'
 
-import {HTML5Backend } from 'react-dnd-html5-backend';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 
 
 export function PlayPage() {
@@ -14,9 +13,7 @@ export function PlayPage() {
         <div className="play-page-container">
             <div id = "account-container">
                 <div className="logo-acc-container">
-
                     <img src="logo.png"></img>
-
                 </div>
             <AccountComp/>
             </div>
