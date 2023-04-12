@@ -44,10 +44,3 @@ body {
     height: 100%;
 }
 
-#account-widget {
-    margin-top: 10px;
-    border: 3px solid black;
-    border-radius: 5px;
-    width: 50%;
-    height: 75%;
-}

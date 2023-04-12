@@ -1,36 +1,63 @@
 import '../style/Field.css';
 import React, {useState} from 'react';
 import {useDrop} from 'react-dnd';
-import {Arrow, Circle, Layer, Line, Stage} from 'react-konva';
+import {Stage} from 'react-konva';
 import {StarWrapper} from './StarWrapper'
+import {SimpleArrowsHandler} from './SimpleArrowsHandler'
+import {IntermitentArrowHandler} from './IntermitentArrowHandler'
+import {useSelector} from "react-redux";
 
 export function BasketballField() {
-    const [players, setPlayer] = useState([])
-    const [nameIter, setnameIter] = useState(12345)
+    const [playersTeamBeige, setPlayersTeamBeige] = useState([])
+    const [playersTeamGreen, setPlayersTeamGreen] = useState([])
+
+    const [nameIter, setnameIter] = useState(0)
     const [isPressed, setPressed] = useState(false);
 
-    /*    const [startPoints, setStartPoints] = useState([])
-        const [endPoints, setEndPoints] = useState([])
-        const [draggablePoints, setDraggablePoints] = useState([])*/
-    let lineMode = true
-    const [lines, setLines] = useState([]) //startCoords ...mid... end Cords
+    let simpleLineMode = useSelector(state => state.basicLineMode)
+    let intermittentLineMode = useSelector(state => state.intermittentLineMode)
+
+    const [simpleArrowLines, setSimpleArrowLines] = useState([])
+    const [intermittentArrowLines, setIntermittentArrowLines] = useState([])
+
     function generateName() {
-        setnameIter(nameIter + 10)
+        setnameIter(nameIter + 1)
         return nameIter
     }
 
-    const [startPoint, setStartPoint] = useState({x: null, y: null});
-    const [endPoint, setEndPoint] = useState({x: null, y: null});
-    const [controlPoints, setControlPoints] = useState([]);
+    const [startPointSimpleArrow, setStartPointSimpleArrow] = useState({x: null, y: null});
+    const [endPointSimpleArrow, setEndPointSimpleArrow] = useState({x: null, y: null});
+    const [controlPointsSimpleArrow, setControlPointsSimpleArrow] = useState([]);
+
+
+    const [startPointIntermittentArrow, setStartPointIntermittentArrow] = useState({x: null, y: null});
+    const [endPointIntermittentArrow, setEndPointIntermittentArrow] = useState({x: null, y: null});
+    const [controlPointsIntermittentArrow, setControlPointsIntermittentArrow] = useState([]);
+
+
+    function setStartAndEndCoords(event, funcStart, funcEnd) {
+        const clientX = event.clientX
+        const clientY = event.clientY - window.innerHeight * 0.1
+        funcStart({x: clientX, y: clientY});
+        funcEnd({x: clientX, y: clientY});
+        setPressed(true)
+    }
 
     function handleMouseDown(event) {
-        if (lineMode == false) return
-        const clientX = event.clientX
-        const clientY = event.clientY
-        setStartPoint({x: clientX, y: clientY});
-        setEndPoint({x: clientX, y: clientY});
-        setPressed(true)
+        if (simpleLineMode) {
+            setStartAndEndCoords(event, setStartPointSimpleArrow, setEndPointSimpleArrow)
+        }
+        if(intermittentArrowLines) {
+            setStartAndEndCoords(event, setStartPointIntermittentArrow, setEndPointIntermittentArrow)
 
+        }
+    }
+
+
+    function updateStartAndEndCoords(event, setCoordsFunc) {
+        const clientX = event.clientX
+        const clientY = event.clientY - window.innerHeight * 0.1
+        setCoordsFunc({x: clientX, y: clientY});
     }
 
     function handleMouseMove(event) {
@@ -38,41 +65,43 @@ export function BasketballField() {
         if (isPressed == false) {
             return
         }
+        if (simpleLineMode) {
+            updateStartAndEndCoords(event, setEndPointSimpleArrow)
+        }
+        if (intermittentLineMode) {
+            updateStartAndEndCoords(event, setEndPointIntermittentArrow)
+        }
 
-        const clientX = event.clientX
-        const clientY = event.clientY
-        setEndPoint({x: clientX, y: clientY});
     }
 
-    function handleMouseUp(event) {
-        if (lineMode == false) return
-        setPressed(false)
+
+    function findControlPointsAndSetPointsCoords(event, startPointObj, setLinesFunc, setStartFunc, setEndFunc) {
         const clientX = event.clientX
 
-        const clientY = event.clientY
+        const clientY = event.clientY - window.innerHeight * 0.1
 
-        const len = Math.sqrt(Math.pow((clientX - startPoint.x), 2) + Math.pow((clientY - startPoint.y), 2))
+        const len = Math.sqrt(Math.pow((clientX - startPointObj.x), 2) + Math.pow((clientY - startPointObj.y), 2))
         let alpha
-        if (clientX > startPoint.x) {
-            alpha = Math.atan((clientY - startPoint.y) * 1.0 / (clientX - startPoint.x))
+        if (clientX > startPointObj.x) {
+            alpha = Math.atan((clientY - startPointObj.y) * 1.0 / (clientX - startPointObj.x))
         } else {
-            if (clientY > startPoint.y) {
-                alpha = Math.PI - Math.atan(Math.abs(clientY - startPoint.y) * 1.0 / Math.abs(clientX - startPoint.x))
+            if (clientY > startPointObj.y) {
+                alpha = Math.PI - Math.atan(Math.abs(clientY - startPointObj.y) * 1.0 / Math.abs(clientX - startPointObj.x))
             } else {
-                alpha = -Math.PI + Math.atan(Math.abs(clientY - startPoint.y) * 1.0 / Math.abs(clientX - startPoint.x))
+                alpha = -Math.PI + Math.atan(Math.abs(clientY - startPointObj.y) * 1.0 / Math.abs(clientX - startPointObj.x))
             }
         }
 
-        let x1 = startPoint.x + len / 3.0 * Math.cos(alpha)
-        let y1 = startPoint.y + len / 3.0 * Math.sin(alpha)
+        let x1 = startPointObj.x + len / 3.0 * Math.cos(alpha)
+        let y1 = startPointObj.y + len / 3.0 * Math.sin(alpha)
 
-        let x2 = startPoint.x + 2 * len / 3.0 * Math.cos(alpha)
-        let y2 = startPoint.y + 2 * len / 3.0 * Math.sin(alpha)
+        let x2 = startPointObj.x + 2 * len / 3.0 * Math.cos(alpha)
+        let y2 = startPointObj.y + 2 * len / 3.0 * Math.sin(alpha)
 
 
-        let startx = startPoint.x
-        let starty = startPoint.y
-        setLines(oldLines => {
+        let startx = startPointObj.x
+        let starty = startPointObj.y
+        setLinesFunc(oldLines => {
                 return [...oldLines, {
                     start: {x: startx, y: starty},
                     mid: [
@@ -90,32 +119,59 @@ export function BasketballField() {
                 }]
             }
         )
-        setStartPoint({x: null, y: null});
-        setEndPoint({x: null, y: null});
+        setStartFunc({x: null, y: null})
+        setEndFunc({x: null, y: null})
+
+    }
+
+    function handleMouseUp(event) {
+        setPressed(false)
+
+        if (simpleLineMode) {
+            findControlPointsAndSetPointsCoords(event, startPointSimpleArrow, setSimpleArrowLines, setStartPointSimpleArrow, setEndPointSimpleArrow)
+        }
+        if (intermittentLineMode) {
+            findControlPointsAndSetPointsCoords(event, startPointIntermittentArrow, setIntermittentArrowLines, setStartPointIntermittentArrow, setEndPointIntermittentArrow)
+        }
 
 
     }
 
-    function handleControlPointDrag(index, event) {
-        console.log(index)
+    function setNewCoordsForControlPoints(index, event, arrowLines, setLines) {
         const {x, y} = event.target.getPosition();
-        const mainIndex = Math.floor(index / 2)
-        const newLines = [...lines];
-
-        if (index % 2 == 0) {
+        const mainIndex = Math.floor(index / 4)
+        const newLines = [...arrowLines];
+        if (index % 4 == 0) {
+            newLines[mainIndex].start.x = x
+            newLines[mainIndex].start.y = y
+        }
+        if (index % 4 == 1) {
             newLines[mainIndex].mid[0].x = x
             newLines[mainIndex].mid[0].y = y
         }
-        if (index % 2 == 1) {
+        if (index % 4 == 2) {
             newLines[mainIndex].mid[1].x = x
             newLines[mainIndex].mid[1].y = y
+        }
+        if (index % 4 == 3) {
+            newLines[mainIndex].end.x = x
+            newLines[mainIndex].end.y = y
         }
         setLines(oldArray => {
             return newLines
         });
+    }
+
+    function handleSimpleLineControlPointDrag(index, event) {
+
+        setNewCoordsForControlPoints(index, event, simpleArrowLines, setSimpleArrowLines)
 
     }
 
+    function handleIntermittentLineControlPointDrag(index, event) {
+        setNewCoordsForControlPoints(index, event, intermittentArrowLines, setIntermittentArrowLines)
+
+    }
 
     const [{isOver}, dropRef] = useDrop({
         accept: 'starwrapper',
@@ -138,9 +194,9 @@ export function BasketballField() {
             }
 
 
-            if (!players.includes(player)) {
+            if (!playersTeamBeige.includes(player)) {
 
-                setPlayer(oldArray => {
+                setPlayersTeamBeige(oldArray => {
                     const filteredArray = oldArray.filter(p => p.name !== newItem.name);
                     return [...filteredArray, newItem];
                 });
@@ -157,73 +213,17 @@ export function BasketballField() {
 
             <Stage width={window.innerWidth} height={window.innerHeight} className="line-container">
 
-                <Layer>
-                    {startPoint && endPoint && (
-                        <>
-                            {lines.map((line, index) => (
-                                <Line
-                                    points={[line.start.x, line.start.y, ...line.mid.flatMap((p) => [p.x, p.y]), line.end.x, line.end.y]}
-                                    stroke="black"
-                                    strokeWidth={2}
-                                    tension={0.2}
-                                    draggable
-
-                                />))
-                            }
-                            {
-                            <Line
-                                points={[startPoint.x, startPoint.y, ...controlPoints.flatMap((p) => [p.x, p.y]), endPoint.x, endPoint.y]}
-                                stroke="black"
-                                strokeWidth={2}
-                                tension={0.2}
-                                draggable
-                            />
-
-
-                            }
-                            {lines.map((line) => (
-                                <Arrow
-                                    points={[line.start.x, line.start.y, ...line.mid.flatMap((p) => [p.x, p.y]), line.end.x, line.end.y]}
-                                    stroke="black"
-                                    fill="black"
-                                    pointerLength={10}
-                                    pointerWidth={10}
-                                    tension={0.2}
-
-                                />))}
-                            {lines.map((line, index) => (
-                                <>
-                                    <Circle
-                                        key={index * 2}
-                                        x={line.mid[0].x}
-                                        y={line.mid[0].y}
-                                        radius={5}
-                                        stroke="black"
-                                        fill="white"
-                                        strokeWidth={2}
-                                        draggable
-                                        onDragMove={(event) => handleControlPointDrag(index * 2, event)}
-                                    />
-                                    <Circle
-                                        key={index * 2 + 1}
-                                        x={line.mid[1].x}
-                                        y={line.mid[1].y}
-                                        radius={5}
-                                        stroke="black"
-                                        fill="white"
-                                        strokeWidth={2}
-                                        draggable
-                                        onDragMove={(event) => handleControlPointDrag(index * 2 + 1, event)}
-                                    />
-                                </>
-                            ))}
-                        </>
-                    )}
-                </Layer>
-
+                <SimpleArrowsHandler startPoint={startPointSimpleArrow} endPoint={endPointSimpleArrow}
+                                     lines={simpleArrowLines}
+                                     handleControlPointDrag={handleSimpleLineControlPointDrag}
+                                     controlPoints={controlPointsSimpleArrow}/>
+                <IntermitentArrowHandler startPoint={startPointIntermittentArrow} endPoint={endPointIntermittentArrow}
+                                         lines={intermittentArrowLines}
+                                         handleControlPointDrag={handleIntermittentLineControlPointDrag}
+                                         controlPoints={controlPointsIntermittentArrow}/>
 
             </Stage>
-            {players.map(player =>
+            {playersTeamBeige.map(player =>
                 <div
                     key={player.name}
                     style={{
