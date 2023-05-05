@@ -8,7 +8,7 @@
     align-items: center;
     overflow: hidden;
     background-image: url(../aboba.svg);
-    background-size: 100% auto;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
@@ -29,7 +29,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-
+    justify-content: center;
 }
 .star-wrapper {
     width: 80px !important;

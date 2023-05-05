@@ -1,4 +1,4 @@
-import {defaultState, SET_BASIC_LINE_MODE, SET_INTERMITTENT_LINE_MODE} from "../state/state.js";
+import {defaultState, SET_BASIC_LINE_MODE, SET_INTERMITTENT_LINE_MODE, SET_WIDE_LINE_MODE} from "../state/state.js";
 
 
 export const reducer = (state = defaultState, action) => {
@@ -14,6 +14,12 @@ export const reducer = (state = defaultState, action) => {
             return {
                 ...state,
                 intermittentLineMode: action.intermittentLineMode
+            }
+        }
+        case SET_WIDE_LINE_MODE: {
+            return {
+                ...state,
+                wideLineMode: action.wideLineMode
             }
         }
         default:

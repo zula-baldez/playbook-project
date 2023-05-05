@@ -6,6 +6,8 @@ import {BasketballField} from "./components/BasketballField";
 import {ElementPanel} from "./components/ElementPanel";
 import {AccountComp} from "./components/AccountComp";
 import {LoginComp} from "./components/LoginComp";
+import {RegisterComp} from "./components/RegisterComp";
+
 import {PlayPage} from "./components/PlayPage";
 
 import {DndProvider} from 'react-dnd'
@@ -20,6 +22,8 @@ root.render(
         <Router>
             <Routes>
                 <Route path='/login' element={< LoginComp/>}/>
+                <Route path='/register' element={< RegisterComp/>}/>
+
                 <Route path='/play-field' element={< PlayPage/>}/>
                 <Route path='/' element={< LoginComp/>}/>
 

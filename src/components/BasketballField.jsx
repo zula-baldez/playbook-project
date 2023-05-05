@@ -6,6 +6,8 @@ import {StarWrapper} from './StarWrapper'
 import {SimpleArrowsHandler} from './SimpleArrowsHandler'
 import {IntermitentArrowHandler} from './IntermitentArrowHandler'
 import {useSelector} from "react-redux";
+import {WideLineHandler} from './WideLineHandler'
+import ReactLogo from '../aboba.svg';
 
 export function BasketballField() {
     const [playersTeamBeige, setPlayersTeamBeige] = useState([])
@@ -16,9 +18,11 @@ export function BasketballField() {
 
     let simpleLineMode = useSelector(state => state.basicLineMode)
     let intermittentLineMode = useSelector(state => state.intermittentLineMode)
+    let wideLineMode = useSelector(state => state.wideLineMode)
 
     const [simpleArrowLines, setSimpleArrowLines] = useState([])
     const [intermittentArrowLines, setIntermittentArrowLines] = useState([])
+    const [wideArrowLines, setWideArrowLines] = useState([])
 
     function generateName() {
         setnameIter(nameIter + 1)
@@ -33,6 +37,10 @@ export function BasketballField() {
     const [startPointIntermittentArrow, setStartPointIntermittentArrow] = useState({x: null, y: null});
     const [endPointIntermittentArrow, setEndPointIntermittentArrow] = useState({x: null, y: null});
     const [controlPointsIntermittentArrow, setControlPointsIntermittentArrow] = useState([]);
+
+    const [startPointWideArrow, setStartPointWideArrow] = useState({x: null, y: null});
+    const [endPointWideArrow, setEndPointWideArrow] = useState({x: null, y: null});
+    const [controlPointsWideArrow, setControlPointsWideArrow] = useState([]);
 
 
     function setStartAndEndCoords(event, funcStart, funcEnd) {
@@ -50,6 +58,9 @@ export function BasketballField() {
         if(intermittentArrowLines) {
             setStartAndEndCoords(event, setStartPointIntermittentArrow, setEndPointIntermittentArrow)
 
+        }
+        if(wideArrowLines) {
+            setStartAndEndCoords(event, setStartPointWideArrow, setEndPointWideArrow)
         }
     }
 
@@ -70,6 +81,10 @@ export function BasketballField() {
         }
         if (intermittentLineMode) {
             updateStartAndEndCoords(event, setEndPointIntermittentArrow)
+        }
+        if(wideLineMode) {
+            updateStartAndEndCoords(event, setEndPointWideArrow)
+
         }
 
     }
@@ -133,6 +148,9 @@ export function BasketballField() {
         if (intermittentLineMode) {
             findControlPointsAndSetPointsCoords(event, startPointIntermittentArrow, setIntermittentArrowLines, setStartPointIntermittentArrow, setEndPointIntermittentArrow)
         }
+        if (wideLineMode) {
+            findControlPointsAndSetPointsCoords(event, startPointWideArrow, setWideArrowLines, setStartPointWideArrow, setEndPointWideArrow)
+        }
 
 
     }
@@ -170,6 +188,10 @@ export function BasketballField() {
 
     function handleIntermittentLineControlPointDrag(index, event) {
         setNewCoordsForControlPoints(index, event, intermittentArrowLines, setIntermittentArrowLines)
+
+    }
+    function handleWideLineControlPointDrag(index, event) {
+        setNewCoordsForControlPoints(index, event, wideArrowLines, setWideArrowLines)
 
     }
 
@@ -210,7 +232,6 @@ export function BasketballField() {
     return (
         <div id="field-container" ref={dropRef} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}
              onMouseUp={handleMouseUp}>
-
             <Stage width={window.innerWidth} height={window.innerHeight} className="line-container">
 
                 <SimpleArrowsHandler startPoint={startPointSimpleArrow} endPoint={endPointSimpleArrow}
@@ -221,6 +242,10 @@ export function BasketballField() {
                                          lines={intermittentArrowLines}
                                          handleControlPointDrag={handleIntermittentLineControlPointDrag}
                                          controlPoints={controlPointsIntermittentArrow}/>
+                <WideLineHandler startPoint={startPointWideArrow} endPoint={endPointWideArrow}
+                                         lines={wideArrowLines}
+                                         handleControlPointDrag={handleWideLineControlPointDrag}
+                                         controlPoints={controlPointsWideArrow}/>
 
             </Stage>
             {playersTeamBeige.map(player =>

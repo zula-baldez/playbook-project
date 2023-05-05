@@ -1,33 +1,45 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
-import {Alert, Snackbar} from '@mui/material';
 
 import '../style/Login.css';
 
-export function LoginComp() {
+export function RegisterComp() {
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
+
     const apiURL = 'http://localhost:8080/api/v1/auth'
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
+    const handleFirstNameChange = (e) => {
+        setFirstname(e.target.value);
+    };
+    const handleLastNameChange = (e) => {
+        setLastname(e.target.value);
+    };
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+ 
 
-    const handleLogin = () => {
-        let res = fetch(apiURL + '/authenticate', {
+    const handlerRegister = () => {
+        let res = fetch(apiURL + '/register', {
             method: "POST",
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                'firstname': firstname,
+                'lastname': lastname,
                 'email': email,
                 'password': password,
+                'role' : 'USER'
             })
         }).then(res => {
                 if (res.status == 200) {
@@ -35,34 +47,14 @@ export function LoginComp() {
                     localStorage['jwt-refresh'] = res.json().refreshToken
                     navigate('/play-field')
                 } else {
-                    setOpen(true)
+                    alert(res.status)
                 }
             }
         )
     };
-    const handleClose = () => {
-        setOpen(false)
-    }
-    const handleSignup = () => {
-        navigate('/register')
-
-    };
+    
     return (
-
         <div className="login-container">
-            <Snackbar
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                }}
-                open={open}
-                autoHideDuration={6000}
-                onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    Wrong login or password!
-                </Alert>
-
-            </Snackbar>
             <div className="logo-wrapper">
 
                 <div className="logo-container">
@@ -71,15 +63,20 @@ export function LoginComp() {
             </div>
             <div className="auth-container">
                 <div className="form-group">
+                    <label htmlFor="first-name">First name</label>
+                    <input type="text" id="first-name" value={firstname} onChange={handleFirstNameChange}/>
+
+                    <label htmlFor="last-name">Last name</label>
+                    <input type="text" id="last-name" value={lastname} onChange={handleLastNameChange}/>
+
                     <label htmlFor="email">Email</label>
-                    <input type="email" id="email" value={email} onChange={handleEmailChange}/>
-                </div>
-                <div className="form-group">
+                    <input type="text" id="email" value={email} onChange={handleEmailChange}/>
+
                     <label htmlFor="password">Password</label>
                     <input type="password" id="password" value={password} onChange={handlePasswordChange}/>
+
                 </div>
-                <button className="auth-btn login" onClick={handleLogin}>Login</button>
-                <button className="auth-btn signup" onClick={handleSignup}>Signup</button>
+                <button className="auth-btn login" onClick={handlerRegister}>Register</button>
             </div>
         </div>
 
